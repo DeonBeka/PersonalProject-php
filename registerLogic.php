@@ -21,6 +21,7 @@
 
 		$tempConfirm = $_POST['confirm_password'];
 		$confirm_password = password_hash($tempConfirm, PASSWORD_DEFAULT);
+		$is_admin = "false";
 
 
 		if(empty($emri) || empty($username) || empty($email) || empty($password) || empty($confirm_password))
@@ -40,6 +41,7 @@
 			$insertSql->bindParam(':email', $email);
 			$insertSql->bindParam(':password', $password);
 			$insertSql->bindParam(':confirm_password', $confirm_password);
+			$insertSql->bindParam(':false', $is_admin);
 
 			$insertSql->execute();
 

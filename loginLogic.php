@@ -48,7 +48,7 @@
                     if ($_SESSION['is_admin'] == 'true'){
                         header('Location: dashboard.php');
                     }
-                     if ($_SESSION['is_admin'] == 'NULL'){
+                     if ($_SESSION['is_admin'] == 'false'){
                         header('Location: index.php');
                     }
                     
