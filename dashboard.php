@@ -74,7 +74,7 @@
         <ul class="nav flex-column">
            <?php if ($_SESSION['is_admin'] == 'true') { ?>
             <li class="nav-item">
-              <a class="nav-link" href="home.php">
+              <a class="nav-link" href="index.php">
                 <span data-feather="file"></span>
                 Home
               </a>
@@ -100,7 +100,7 @@
         </ul>
         <?php }else {?>
           <li class="nav-item">
-              <a class="nav-link" href="home.php">
+              <a class="nav-link" href="index.php">
                
                 Home
               </a>
@@ -144,12 +144,7 @@
 
     <?php if ($_SESSION['is_admin'] == 'true') { ?>
 
-      <div class="d-flex justify-content-between align-items-center mt-5 mb-3">
-          <h2>Hotels</h2>
-          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addMovieModal">
-            Add New Hotel Booking
-          </button>
-      </div>
+      
       
       
       
@@ -177,7 +172,7 @@
                 <td><?php echo $user_data['email']; ?></td>
                 <td><?php echo $user_data['is_admin']; ?></td>
                 <!-- If we want to update a user we need to link into editUsers.php -->
-                <td><a href="editUsers.php?id=<?= $user_data['id'];?>">Update</a></td>
+                <td><a href="updateUsers.php?id=<?= $user_data['id'];?>">Update</a></td>
                   <!-- If we want to delete a user we need to link into deleteUsers.php -->
                 <td><a href="deleteUsers.php?id=<?= $user_data['id'];?>">Delete</a></td>
               </tr>
@@ -206,10 +201,19 @@
               <th scope="col">Delete</th>
             </tr>
           </thead>
+
+          <div class="d-flex justify-content-between align-items-center mt-5 mb-3">
+            <h2>Hotels</h2>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addMovieModal">
+             Add New Hotel Booking
+             </button>
+          </div>
           <tbody>
             <?php if ($_SESSION['is_admin'] == 'true') { 
                   // Debug: Print the movies data as JSON for debugging
                   echo "<!-- Debug: " . json_encode($hotels_data) . " -->";
+
+                  
                   
                   // Loop through each movie
                   if (count($hotels_data) > 0) {
