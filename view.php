@@ -1,117 +1,187 @@
 <?php 
-  /*Creating a session  based on a session identifier, passed via a GET or POST request.
-  We will include config.php for connection with database.
-  We will get the data of films from database based on each films ids.
-  Creating a form which will post some of those datas into book.php file
-  */
 	session_start();
-  
-   include_once('database/config.php');
-   $id = $_GET['id'];
-   $_SESSION['hotel_id'] = $id;
-   $sql = "SELECT * FROM hotels WHERE id=:id";
-   $selectHotels = $conn->prepare($sql);
-   $selectHotels->bindParam(":id",$id);
-   $selectHotels->execute();
-   $hotel_data = $selectHotels->fetch();
+	include_once('database/config.php');
+
+	$id = $_GET['id'];
+	$_SESSION['hotel_id'] = $id;
+
+	$sql = "SELECT * FROM hotels WHERE id=:id";
+	$selectHotels = $conn->prepare($sql);
+	$selectHotels->bindParam(":id",$id);
+	$selectHotels->execute();
+	$hotel_data = $selectHotels->fetch();
 ?>
 
- <!DOCTYPE html>
- <html>
- <head>
- 	<title>Home</title>
- 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
- 	 <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-    <meta name="generator" content="Hugo 0.88.1">
-  	<link rel="apple-touch-icon" href="/docs/5.1/assets/img/favicons/apple-touch-icon.png" sizes="180x180">
-	<link rel="icon" href="/docs/5.1/assets/img/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
-	<link rel="icon" href="/docs/5.1/assets/img/favicons/favicon-16x16.png" sizes="16x16" type="image/png">
-	<link rel="manifest" href="/docs/5.1/assets/img/favicons/manifest.json">
-	<link rel="mask-icon" href="/docs/5.1/assets/img/favicons/safari-pinned-tab.svg" color="#7952b3">
-	<link rel="icon" href="/docs/5.1/assets/img/favicons/favicon.ico">
-  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-	<meta name="theme-color" content="#7952b3">
-  <style>
-    .form-floating{
-      margin: 20px 0;
-    }
-  </style>
- </head>
- <body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title><?php echo htmlspecialchars($hotel_data['hotel_name']); ?> - StayFinder</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 
- 	<header>
-    <div class="collapse bg-dark" id="navbarHeader">
-     <div class="container">
-        <div class="row">
-            <div class="col-sm-8 col-md-7 py-4">
-                <h4 class="text-white">About</h4>
-                <p class="text-muted">Add some information about the album below, the author, or any other background context. Make it a few sentences long so folks can pick up some informative tidbits. Then, link them off to some social networking sites or contact information.</p>
-            </div>
-            <div class="col-sm-4 offset-md-1 py-4">
-              <h4 class="text-white">Contact</h4>
-              <ul class="list-unstyled">
-                <li><a href="#" class="text-white">Follow on Twitter</a></li>
-                <li><a href="#" class="text-white">Like on Facebook</a></li>
-                <li><a href="#" class="text-white">Email me</a></li>
-              </ul>
-            </div>
-      </div>
-    </div>
-  </div>
-  <div class="navbar navbar-dark bg-dark shadow-sm">
-    <div class="container">
-      <a href="#" class="navbar-brand d-flex align-items-center">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true" class="me-2" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-        <strong>Hotels</strong>
-      </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-    </div>
-  </div>
+	<!-- Bootstrap 5.3 -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+	<!-- Google Fonts -->
+	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+	<style>
+		body {
+			font-family: 'Poppins', sans-serif;
+			background: #f9fafc;
+			color: #333;
+		}
+		a { text-decoration: none; }
+
+		/* Navbar */
+		.site-header {
+			background: rgba(255,255,255,0.9);
+			backdrop-filter: blur(10px);
+			box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+		}
+		.navbar-brand {
+			font-weight: 700;
+			font-size: 1.6rem;
+			color: #5a2dc4 !important;
+		}
+		.nav-link {
+			font-weight: 500;
+			color: #444 !important;
+		}
+		.nav-link:hover {
+			color: #5a2dc4 !important;
+		}
+
+		/* Hotel Card */
+		.hotel-detail-card {
+			border: none;
+			border-radius: 1rem;
+			overflow: hidden;
+			box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+			background: #fff;
+		}
+		.hotel-detail-card img {
+			border-radius: 1rem;
+			object-fit: cover;
+			width: 100%;
+			height: 100%;
+		}
+
+		/* Form Styling */
+		.form-floating {
+			margin: 15px 0;
+		}
+		.form-control {
+			border-radius: 0.75rem;
+			padding: 0.9rem;
+			font-size: 1rem;
+		}
+		.btn-primary {
+			background: linear-gradient(135deg, #5a2dc4, #2b92ff);
+			border: none;
+			border-radius: 0.75rem;
+			padding: 0.9rem;
+			font-weight: 600;
+			transition: 0.3s;
+		}
+		.btn-primary:hover {
+			background: linear-gradient(135deg, #2b92ff, #5a2dc4);
+			transform: translateY(-2px);
+		}
+
+		/* Footer */
+		.site-footer {
+			background: linear-gradient(135deg, #5a2dc4, #2b92ff);
+			color: #eee;
+			padding: 2rem 0;
+			margin-top: 3rem;
+		}
+		.site-footer a { color: #eee; }
+		.site-footer a:hover { color: #fff; }
+	</style>
+</head>
+<body>
+
+<!-- Navbar -->
+<header class="site-header fixed-top">
+	<nav class="navbar navbar-expand-lg container">
+		<a class="navbar-brand" href="index.php">StayFinder</a>
+		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarMain">
+			<ul class="navbar-nav ms-auto">
+				<li class="nav-item"><a class="nav-link" href="index.php#hotels">Hotels</a></li>
+				<li class="nav-item"><a class="nav-link" href="index.php#about">About</a></li>
+				<?php if (isset($_SESSION['user_id'])): ?>
+					<li class="nav-item"><a class="nav-link" href="logout.php">Logout</a></li>
+				<?php else: ?>
+					<li class="nav-item"><a class="nav-link" href="login.php">Login</a></li>
+				<?php endif; ?>
+			</ul>
+		</div>
+	</nav>
 </header>
- 
- 	<section class="py-5 text-center container">
-    <div class="row py-lg-5">
-      <div class="col-lg-6 col-md-8 mx-auto">
-        <h1 class="fw-light">Book your hotel</h1>
-        <p class="lead text-muted">You can book your hotel by clicking the button below</p>
-      </div>
-    </div>
-  </section>
 
-  <div class="album py-5 bg-light">
-    <div class="container">
-      <div class="container">
-    <div class="card">
-        <div class="card-body">
-            <div class="row">
-                <div class="col-lg-5 col-md-5 col-sm-6">
-                    <div class="white-box text-center" style="width: 100%;height: 100%;"><img src="hotel_images/<?php echo $hotel_data['hotel_image'];  ?>" class="img-responsive" style="width: 70%; height: 90%;"></div>
-                </div>
-                <div class="col-lg-7 col-md-7 col-sm-6">
-                    <h4 class="box-title mt-5"><?php echo $hotel_data['hotel_name']; ?></h4>
-                    <p><?php echo $hotel_data['hotel_desc']; ?></p>
-                    <form action="book.php" method="post">
-                    <div class="form-floating">
-                      <input type="number" class="form-control" id="floatingInput" placeholder="Number of Nights" name="nr_tickets" >
-                      <label for="floatingInput">Number of Nights</label>
-                    </div>
-                    <div class="form-floating">
-                      <input type="date" class="form-control" id="floatingInput" placeholder="Date" name="date" >
-                      <label for="floatingInput">From</label>
-                    </div>
-                    <div class="form-floating">
-                      <input type="date" class="form-control" id="floatingInput" placeholder="Date" name="date" >
-                      <label for="floatingInput">To</label>
-                    </div>
-                    <button class="w-100 btn btn-lg btn-primary" type="submit" name="submit">Book</button>
-                  </form>
-                </div>
-            </div>
-        </div>
-    </div>
- </body>
- </html>
+<!-- Main Content -->
+<main class="container" style="padding-top:100px;">
+	<section class="py-5">
+		<div class="row justify-content-center">
+			<div class="col-lg-10">
+				<div class="card hotel-detail-card p-4">
+					<div class="row g-4 align-items-center">
+						<!-- Hotel Image -->
+						<div class="col-md-5">
+							<img src="hotel_images/<?php echo $hotel_data['hotel_image']; ?>" alt="Hotel Image">
+						</div>
+
+						<!-- Hotel Info + Booking -->
+						<div class="col-md-7">
+							<h2 class="fw-bold mb-3"><?php echo htmlspecialchars($hotel_data['hotel_name']); ?></h2>
+							<p class="text-muted"><?php echo htmlspecialchars($hotel_data['hotel_desc']); ?></p>
+
+							<form action="book.php" method="post">
+								<div class="form-floating">
+									<input type="number" class="form-control" id="nights" placeholder="Number of Nights" name="nr_tickets" required>
+									<label for="nights">Number of Nights</label>
+								</div>
+								<div class="form-floating">
+									<input type="date" class="form-control" id="start_date" name="start_date" required>
+									<label for="start_date">From</label>
+								</div>
+								<div class="form-floating">
+									<input type="date" class="form-control" id="end_date" name="end_date" required>
+									<label for="end_date">To</label>
+								</div>
+								<button class="w-100 btn btn-lg btn-primary mt-3" type="submit" name="submit">Book Now</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</main>
+
+<!-- Footer -->
+<footer class="site-footer">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6">
+				<h5>StayFinder</h5>
+				<p>Connecting you with great places to stay worldwide.</p>
+			</div>
+			<div class="col-md-6 text-md-end">
+				<h5>Contact</h5>
+				<p>Email: support@stayfinder.com</p>
+				<p>Phone: +1-800-123-4567</p>
+			</div>
+		</div>
+		<div class="text-center mt-4">
+			<small>&copy; <?php echo date("Y"); ?> StayFinder. All rights reserved.</small>
+		</div>
+	</div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

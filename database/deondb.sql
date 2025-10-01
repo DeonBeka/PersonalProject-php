@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 29, 2025 at 07:16 PM
+-- Generation Time: Oct 01, 2025 at 07:14 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -20,6 +20,22 @@ SET time_zone = "+00:00";
 --
 -- Database: `deondb`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `bookings`
+--
+
+CREATE TABLE `bookings` (
+  `id` int(255) NOT NULL,
+  `user_id` int(255) NOT NULL,
+  `hotel_id` int(255) NOT NULL,
+  `nr_nights` int(255) NOT NULL,
+  `start_date` varchar(255) NOT NULL,
+  `end_date` varchar(255) NOT NULL,
+  `is_approved` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
